@@ -42,21 +42,15 @@ npm start
 
 Open **http://localhost:3000** in your browser.
 
----
-
-## Part 2 — What Was Implemented (100 words)
+## System Design
 
 I built a Juice Shop–style login page with email and password fields styled like the OWASP Juice Shop preview site. The form includes client-side validation that blocks empty submissions, requires "@" in the email, and enforces an eight-character minimum password. Matching server-side validation runs on the Express backend before any database lookup. On successful login, the server returns the user's email and role. The project includes a SQLite database with sample customer and admin accounts, a README with setup instructions, and documentation for this assignment. The repository should be public on GitHub for instructor assessment.
 
----
-
-## Part 2 — How It Was Implemented (100 words)
 
 The frontend uses HTML for structure, CSS for Juice Shop–inspired styling, and vanilla JavaScript for validation. The `validateEmail` and `validatePassword` functions check required fields, the "@" symbol, and password length. On submit, the form sends a JSON POST to `/api/login`. The Express server mirrors the same validation rules in `validateEmailServer` and `validatePasswordServer` before querying SQLite. User credentials are stored via `init-db.js`. The server responds with JSON containing the authenticated user's role or an error message, which the frontend displays in a styled alert box below the login button.
 
----
 
-## Part 2 — Validation Features
+##  Validation Features
 
 ### Client-Side (`public/js/validation.js`)
 
@@ -77,8 +71,6 @@ The `/api/login` endpoint repeats the same rules before querying the database:
 - Requires `@` in email
 - Requires password length ≥ 8
 
----
-
 ## Sample Credentials
 
 | Email | Password | Role |
@@ -88,9 +80,7 @@ The `/api/login` endpoint repeats the same rules before querying the database:
 
 ---
 
-## Part 3 — SQL Injection Attack Documentation
-
-### Vulnerability
+## SQL Injection Attack
 
 The login endpoint in `server/server.js` builds SQL queries using **string concatenation**:
 
@@ -100,39 +90,18 @@ const query = `SELECT id, email, password, role FROM users WHERE email = '${emai
 
 User input is inserted directly into the query without sanitization or parameterized statements, making the application vulnerable to **SQL Injection**.
 
-### Attack Steps
-
-#### Step 1 — Start the application
-
-```bash
-npm install
-npm run init-db
-npm start
-```
-
-Open **http://localhost:3000**.
-
-#### Step 2 — Enter the SQL injection payload
-
-Because both client-side and server-side validation require `@` in the email, use a comment-based bypass that still satisfies that rule.
-
-In the **Email** field, enter:
+Because both client-side and server-side validation require `@` in the email, using a comment-based bypass  satisfies the rule.
+We can use the following email ID:
 
 ```
 admin@juice-sh.op'--
 ```
 
-In the **Password** field, enter any valid password (8+ characters):
+In the **Password** field, any valid password would work (8+ characters):
 
 ```
 anything1
 ```
-
-#### Step 3 — Submit the form
-
-Click **Log in**.
-
-#### Step 4 — Observe the result
 
 The injected query becomes:
 
@@ -143,43 +112,6 @@ WHERE email = 'admin@juice-sh.op'--' AND password = 'anything1'
 
 The `--` comments out the password check, so only the email condition is evaluated. The server returns the admin account without a valid password.
 
-**Expected success message:**
-
-```
-Welcome, admin@juice-sh.op! Role: admin
-```
-
-You have logged in as the **admin** without knowing the real admin password.
-
-### Alternative Payload (OR-based bypass)
-
-**Email:**
-
-```
-x' OR '1'='1' -- @x.com
-```
-
-**Password:**
-
-```
-password
-```
-
-The `@` in `@x.com` satisfies validation. The query becomes:
-
-```sql
-SELECT ... WHERE email = 'x' OR '1'='1' -- @x.com' AND password = 'password'
-```
-
-Because `'1'='1'` is always true, the query returns the first user in the database.
-
-### Screenshot Description
-
-After submitting the `admin@juice-sh.op'--` payload, the green success banner below the login button displays:
-
-> **Welcome, admin@juice-sh.op! Role: admin**
-
-This confirms unauthorized access to the admin account without valid credentials.
 
 ### Recommended Fix
 
@@ -194,7 +126,7 @@ const user = db.prepare(
 
 Parameterized queries treat user input as **data**, not executable SQL, preventing injection attacks. Additional best practices:
 
-- Hash passwords with bcrypt (never store plaintext)
+- Hash passwords with bcrypt
 - Use an ORM or query builder with built-in escaping
 - Apply the principle of least privilege for database accounts
 - Add input validation as defense-in-depth (not a substitute for parameterized queries)
@@ -244,7 +176,3 @@ The script does **not** execute. On login failure or success, the email would ap
 - **Database:** SQLite (better-sqlite3)
 
 ---
-
-## License
-
-MIT — for academic use in CSCE703.
