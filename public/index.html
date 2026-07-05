@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - OWASP Juice Shop</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <span class="logo">🍊 OWASP Juice Shop</span>
+      <nav class="nav">
+        <a href="#">Account</a>
+        <a href="#">Your Basket</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="login-card">
+      <h1>Login</h1>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email">
+          <span class="error" id="emailError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password">
+          <span class="error" id="passwordError"></span>
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="rememberMe"> Remember me
+          </label>
+          <a href="#" class="forgot-link">Forgot your password?</a>
+        </div>
+
+        <button type="submit" class="btn-login">
+          <span class="btn-icon">→</span> Log in
+        </button>
+      </form>
+
+      <p class="register-link">Not yet a customer? <a href="#">Register</a></p>
+
+      <div id="serverMessage" class="server-message" role="alert" hidden></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>OWASP Juice Shop v20.2.0 — CSCE703 HW3 Demo</p>
+  </footer>
+
+  <script src="js/validation.js"></script>
+</body>
+</html>

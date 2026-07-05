@@ -1,0 +1,17 @@
+{
+  "name": "juice-shop-login-hw3",
+  "version": "1.0.0",
+  "description": "CSCE703 HW3 - Juice Shop login form with client/server validation and SQL injection demo",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "init-db": "node server/init-db.js"
+  },
+  "keywords": ["owasp", "juice-shop", "security", "sql-injection"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "express": "^4.21.2"
+  }
+}
