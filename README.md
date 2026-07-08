@@ -6,6 +6,8 @@ A Juice Shop–inspired login page with **client-side** and **server-side** vali
 
 ---
 
+Help taken with Cursor and Gemini to code and format.
+
 ## Project Structure
 
 ```
